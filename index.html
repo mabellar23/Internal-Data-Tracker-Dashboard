@@ -601,6 +601,26 @@ dataForm.addEventListener('submit', function(e) {
     saveToLocalStorage();
     updateDropdownFilters();
     renderTable();
+// ✅ SEND DATA TO EXCEL VIA POWER AUTOMATE
+const flowURL = "https://default56b731a8a2ac4c32bf6b616810e913.c6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/04848ec0cb114f6f93ab1ea96b513243/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=YTfSk5a8w8ST8D5v4QvGB5pbd_dcn5uFnKGcZauzDjQ";
+
+const cloudData = {
+    date: document.getElementById('trackDate').value,
+    ritm: document.getElementById('ritm').value,
+    ticketType: document.getElementById('ticketType').value,
+    group: document.getElementById('assignGroup').value,
+    name: document.getElementById('custName').value
+};
+
+fetch(flowURL, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(cloudData)
+})
+.then(() => console.log("✅ Saved to Excel"))
+.catch(err => console.error("❌ Error:", err));
 
     dataForm.reset();
     dataForm.querySelector("button").innerText = "Add Record";
